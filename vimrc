@@ -1,90 +1,102 @@
 " ==============================================
-" Basic Vim Editor Settings
+" Base Editor Settings
 " ==============================================
-" Restore default GUI cursor settings for terminal compatibility
-set guicursor&vim
-" Always display status line (2 = always show)
+" Restore default GUI cursor
+set guicursor&
+
+" Always show status line
 set laststatus=2
-" Keep 8 lines of padding above/below cursor when scrolling
+
+" Keep 8 lines of context above/below cursor
 set scrolloff=8
 
-" Line number configuration
-set number                  " Show absolute line numbers
-set relativenumber          " Show relative line numbers for quick jumping
-set cursorline              " Highlight current cursor line
+" Show absolute & relative line numbers
+set number
+set relativenumber
 
-" Indentation & Tab settings (standard 4-space indent)
-set tabstop=4               " Number of spaces a tab character occupies
-set softtabstop=4           " Number of spaces for tab/backspace operations
-set shiftwidth=4            " Auto-indent width for code blocks
-set expandtab               " Convert tab keys to spaces
-set smartindent             " Enable smart indentation for programming languages
+" Highlight current cursor line
+set cursorline
 
-" Encoding settings (full UTF-8 support)
-set encoding=utf-8          " Internal Vim encoding
-set fileencoding=utf-8      " Default file save encoding
-set fileencodings=utf-8     " Priority list for file encoding detection
+" Tab & indent configuration
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab       " Use spaces instead of tabs
+set smartindent     " Smart indent for code
 
-" Text wrapping & display settings
-set wrap                    " Wrap long lines at window edge
-set linebreak               " Break lines at word boundaries (no broken words)
-set nolist                  " Disable invisible character symbols (tabs/spaces)
+" Encoding settings
+set encoding=utf-8
+set fileencoding=utf-8
+set fileencodings=utf-8
 
-" File format settings (Unix line ending compatibility)
-set fileformat=unix         " Use LF line endings for cross-platform compatibility
+" Line wrapping
+set wrap            " Wrap long lines
+set linebreak       " Break lines at word boundaries
+set nolist          " Do not display invisible characters
+
+" Use Unix line endings
+set fileformat=unix
 
 " ==============================================
-" Plugin Management (Vim-Plug)
+" Plugin Management (vim-plug)
 " ==============================================
-call plug#begin('~/.vim/plugged')
+call plug#begin()
 
-" FZF - Fuzzy file search core engine (auto install binaries)
+" Fuzzy finder core & UI
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-" FZF.vim - Vim integration for fzf fuzzy finder
 Plug 'junegunn/fzf.vim'
 
-" Lightline.vim - Lightweight status line theme
+" Status line theme
 Plug 'itchyny/lightline.vim'
 
-" Ayu-vim - Elegant minimalist color scheme
+" Ayu color scheme
 Plug 'ayu-theme/ayu-vim'
 
-" Highlightedyank - Highlight text after yank/copy operation
+" Highlight yanked text temporarily
 Plug 'machakann/vim-highlightedyank'
 
 call plug#end()
 
 " ==============================================
-" Color Scheme & Syntax Highlighting
+" Color Scheme Configuration
 " ==============================================
-syntax on                   " Enable file syntax highlighting
-set t_Co=256                " Enable 256-color terminal support
-set termguicolors           " Enable true RGB color support for modern terminals
-let ayucolor="mirage"       " Set ayu theme variant (mirage/dark/light)
-colorscheme ayu             " Apply ayu color scheme
+syntax on               " Enable syntax highlighting
+set t_Co=256            " Enable 256-color support
+set termguicolors       " Enable true color
+
+let ayucolor="mirage"   " Use Ayu Mirage variant
+colorscheme ayu
 let g:lightline = { 'colorscheme': 'ayu_mirage' }
 
 " ==============================================
-" Custom Key Remappings
+" Key Mappings
 " ==============================================
-" Set space key as custom leader key for shortcuts
+" Set space as leader key
 let mapleader = " "
 
-" Normal mode mappings
-nnoremap <leader>pv :Vex<CR>               " Open vertical file explorer
-nnoremap <leader><CR> :so ~/.vimrc<CR>    " Reload .vimrc config manually
-nnoremap <C-p> :GFiles<CR>                " Fuzzy search git tracked files
-nnoremap <leader>pf :Files<CR>            " Fuzzy search all project files
-nnoremap <leader>y "+y                    " Yank single line to system clipboard
-nnoremap <leader>Y gg"+yG                 " Yank entire file content to system clipboard
+" Open file explorer
+nnoremap <leader>pv :Vex<CR>
 
-" Visual mode mappings
-vnoremap <leader>p "_dP                   " Paste without overwriting default register
-vnoremap <leader>y "+y                    " Yank selected text to system clipboard
-vnoremap J :m '>+1<CR>gv=gv               " Move selected text down and auto-indent
-vnoremap K :m '<-2<CR>gv=gv               " Move selected text up and auto-indent
+" Reload vimrc config
+nnoremap <leader><CR> :so ~/.vimrc<CR>
 
-" Disable arrow keys in all modes (force hjkl navigation)
+" FZF file search shortcuts
+nnoremap <C-p> :GFiles<CR>
+nnoremap <leader>pf :Files<CR>
+
+" Paste over selection without overwriting default register
+vnoremap <leader>p "_dP
+
+" Copy to system clipboard
+vnoremap <leader>y "+y
+nnoremap <leader>y "+y
+nnoremap <leader>Y gg"+yG
+
+" Move selected lines up/down in visual mode
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
+" Disable arrow keys (force using hjkl)
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
@@ -101,21 +113,9 @@ vnoremap <Left> <Nop>
 vnoremap <Right> <Nop>
 
 " ==============================================
-" Custom Auto Commands & Functions
+" Yank Highlight Configuration
 " ==============================================
-" Auto add blank line at end of file on save (POSIX standard)
-function! AddLastLine()
-    " Check if last line is not empty
-    if getline('$') !~ "^$"
-        call append(line('$'), '')
-    endif
-endfunction
-autocmd BufWritePre * call AddLastLine()
-
-" ==============================================
-" Yank Highlight Plugin Configuration
-" ==============================================
-" Set yank highlight style (reverse foreground/background)
+" Highlight style for yanked region
 highlight HighlightedyankRegion cterm=reverse gui=reverse
-" Set yank highlight duration to 300 milliseconds
+" Highlight duration (milliseconds)
 let g:highlightedyank_highlight_duration = 300
