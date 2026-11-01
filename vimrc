@@ -62,6 +62,7 @@ set t_Co=256                " Enable 256-color terminal support
 set termguicolors           " Enable true RGB color support for modern terminals
 let ayucolor="mirage"       " Set ayu theme variant (mirage/dark/light)
 colorscheme ayu             " Apply ayu color scheme
+let g:lightline = { 'colorscheme': 'ayu_mirage' }
 
 " ==============================================
 " Custom Key Remappings
