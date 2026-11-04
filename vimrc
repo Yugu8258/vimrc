@@ -68,6 +68,15 @@ let ayucolor="mirage"   " Use Ayu Mirage variant
 colorscheme ayu
 let g:lightline = { 'colorscheme': 'ayu_mirage' }
 
+" Transparent background
+let g:ayu_mirage_transparent = 1
+highlight Normal ctermbg=NONE guibg=NONE
+highlight NonText ctermbg=NONE guibg=NONE
+highlight LineNr ctermbg=NONE guibg=NONE
+highlight SignColumn ctermbg=NONE guibg=NONE
+highlight VertSplit ctermbg=NONE guibg=NONE
+highlight EndOfBuffer ctermbg=NONE guibg=NONE
+
 " ==============================================
 " Key Mappings
 " ==============================================
